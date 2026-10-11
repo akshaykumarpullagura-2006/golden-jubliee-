@@ -1,0 +1,449 @@
+/* ========================================================
+   LUXURY INVITATION CARD & ENVELOPE STYLING
+   ======================================================== */
+
+.invitation-experience-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  perspective: 1600px;
+}
+
+/* Outer Card Container */
+.luxury-card-container {
+  position: relative;
+  background-color: var(--color-ivory-light);
+  border: 1px solid rgba(200, 169, 107, 0.4);
+  box-shadow: var(--shadow-luxury);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: var(--transition-card);
+}
+
+.luxury-card-container.is-open {
+  box-shadow: var(--shadow-card-open);
+}
+
+/* Inner Double Gold Border */
+.card-inner-border {
+  position: relative;
+  margin: 14px;
+  padding: clamp(1.75rem, 5vw, 4rem);
+  border: 1px solid rgba(200, 169, 107, 0.45);
+  background-color: #FCF9F2;
+  background-image: radial-gradient(circle at 50% 0%, rgba(200, 169, 107, 0.06) 0%, transparent 70%);
+}
+
+@media (max-width: 640px) {
+  .card-inner-border {
+    margin: 8px;
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* Corner Ornaments */
+.corner-ornament {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.corner-ornament.top-left {
+  top: 6px;
+  left: 6px;
+  border-top: 2px solid var(--color-gold-champagne);
+  border-left: 2px solid var(--color-gold-champagne);
+}
+
+.corner-ornament.top-right {
+  top: 6px;
+  right: 6px;
+  border-top: 2px solid var(--color-gold-champagne);
+  border-right: 2px solid var(--color-gold-champagne);
+}
+
+.corner-ornament.bottom-left {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 2px solid var(--color-gold-champagne);
+  border-left: 2px solid var(--color-gold-champagne);
+}
+
+.corner-ornament.bottom-right {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 2px solid var(--color-gold-champagne);
+  border-right: 2px solid var(--color-gold-champagne);
+}
+
+/* ========================================================
+   CLOSED ENVELOPE / SEALED STATE
+   ======================================================== */
+.card-envelope-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(3rem, 7vw, 5.5rem) 1.5rem;
+  position: relative;
+  background: linear-gradient(180deg, #FAF6EE 0%, #F5EEDB 100%);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.card-envelope-cover:hover {
+  background: linear-gradient(180deg, #FFFDF7 0%, #F8F1DF 100%);
+}
+
+.card-envelope-cover:hover .wax-seal-wrapper {
+  transform: scale(1.04);
+  box-shadow: 0 15px 35px rgba(200, 169, 107, 0.35);
+}
+
+.envelope-flap-decor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  border-bottom: 1px solid rgba(200, 169, 107, 0.3);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: rgba(200, 169, 107, 0.05);
+  pointer-events: none;
+}
+
+.wax-seal-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 1.5rem auto 2rem;
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(18, 53, 43, 0.15);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.wax-seal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.wax-seal-pulse {
+  position: absolute;
+  inset: -6px;
+  border: 1px dashed var(--color-gold-champagne);
+  border-radius: 50%;
+  animation: rotateSlow 25s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.envelope-recipient-label {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold-dark);
+  margin-bottom: 0.75rem;
+}
+
+.envelope-couple-names {
+  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+  font-weight: 600;
+  color: var(--color-emerald-deep);
+  line-height: 1.35;
+  max-width: 640px;
+  margin-bottom: 1.25rem;
+}
+
+.envelope-open-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-emerald-deep);
+  background: var(--color-gold-foil-subtle);
+  border: 1px solid var(--color-gold-champagne);
+  padding: 0.75rem 1.75rem;
+  border-radius: 50px;
+  margin-top: 1rem;
+  transition: var(--transition-smooth);
+}
+
+.envelope-open-indicator:hover {
+  background: var(--color-emerald-deep);
+  color: var(--color-ivory-light);
+}
+
+/* ========================================================
+   OPEN CARD UNFOLDED CONTENT
+   ======================================================== */
+.card-unfolded-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: cardContentFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes cardContentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Top Monogram & Jubilee Title */
+.card-top-section {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.card-crest-number {
+  font-family: var(--font-display-luxury);
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.card-badge-pill {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold-champagne);
+  padding: 0.25rem 1rem;
+  border-top: 1px solid rgba(200, 169, 107, 0.4);
+  border-bottom: 1px solid rgba(200, 169, 107, 0.4);
+}
+
+/* Couple Picture in Card */
+.card-couple-portrait-wrapper {
+  width: clamp(140px, 25vw, 200px);
+  height: clamp(140px, 25vw, 200px);
+  border-radius: 50%;
+  margin: 1.5rem auto;
+  padding: 5px;
+  background: var(--color-gold-foil);
+  box-shadow: 0 10px 25px rgba(18, 53, 43, 0.12);
+}
+
+.card-couple-portrait {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #FFFDF8;
+}
+
+/* Couple Names & Invitation Message */
+.card-couple-names {
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  color: var(--color-emerald-deep);
+  line-height: 1.35;
+  margin-bottom: 1rem;
+}
+
+.card-couple-names-individual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-person-name {
+  font-size: clamp(1.25rem, 2.8vw, 1.85rem);
+  font-weight: 600;
+  color: var(--color-emerald-deep);
+}
+
+.card-message-body {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  color: var(--color-charcoal);
+  max-width: 680px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+
+.card-warmth-quote {
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  color: var(--color-burgundy);
+  font-weight: 500;
+  margin-bottom: 2.25rem;
+  padding: 1rem 1.5rem;
+  background-color: rgba(111, 38, 51, 0.04);
+  border-left: 2px solid var(--color-gold-champagne);
+  border-right: 2px solid var(--color-gold-champagne);
+  border-radius: 2px;
+}
+
+/* Card Date & Schedule Grid */
+.card-schedule-box {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+  padding: 1.75rem 1.25rem;
+  background-color: #FAF5EB;
+  border: 1px solid rgba(200, 169, 107, 0.35);
+  border-radius: 4px;
+}
+
+.card-date-highlight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px dashed rgba(200, 169, 107, 0.5);
+}
+
+.card-date-number {
+  font-family: var(--font-display-luxury);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-weight: 700;
+  color: var(--color-emerald-deep);
+  letter-spacing: 0.05em;
+}
+
+.card-date-day {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-gold-dark);
+}
+
+.card-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  text-align: left;
+}
+
+.card-event-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .card-event-row {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
+
+.card-event-time {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-gold-dark);
+  min-width: 140px;
+}
+
+.card-event-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-emerald-deep);
+}
+
+/* Card Venue Box */
+.card-venue-box {
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 2.5rem;
+}
+
+.card-venue-title {
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  font-weight: 700;
+  color: var(--color-emerald-deep);
+  margin-bottom: 0.25rem;
+}
+
+.card-venue-address {
+  font-size: 1.05rem;
+  color: var(--color-charcoal-muted);
+}
+
+/* Card Actions Bar */
+.card-actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.card-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  transition: var(--transition-smooth);
+}
+
+.card-action-btn.btn-close {
+  background-color: transparent;
+  color: var(--color-charcoal-muted);
+  border: 1px solid rgba(28, 28, 26, 0.2);
+}
+
+.card-action-btn.btn-close:hover {
+  background-color: rgba(28, 28, 26, 0.08);
+  color: var(--color-charcoal);
+}
+
+.card-action-btn.btn-calendar {
+  background-color: var(--color-emerald-deep);
+  color: var(--color-ivory-light);
+  border: 1px solid var(--color-gold-champagne);
+}
+
+.card-action-btn.btn-calendar:hover {
+  background-color: var(--color-emerald-dark);
+  color: var(--color-gold-bright);
+}
+
+.card-action-btn.btn-share {
+  background-color: var(--color-gold-foil-subtle);
+  color: var(--color-emerald-deep);
+  border: 1px solid var(--color-gold-champagne);
+}
+
+.card-action-btn.btn-share:hover {
+  background-color: var(--color-gold-champagne);
+  color: var(--color-emerald-dark);
+}

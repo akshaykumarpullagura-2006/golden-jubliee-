@@ -1,0 +1,424 @@
+:root {
+  /* ========================================================
+     LUXURY COLOR SYSTEM
+     ======================================================== */
+  --color-emerald-deep: #12352B;
+  --color-emerald-dark: #0B221B;
+  --color-emerald-light: #1D4B3E;
+  
+  --color-ivory: #F7F1E5;
+  --color-ivory-light: #FFFDF8;
+  --color-ivory-dark: #ECE3D2;
+  --color-ivory-paper: #FAF6EF;
+  
+  --color-gold-champagne: #C8A96B;
+  --color-gold-light: #E2C992;
+  --color-gold-bright: #F0DCB0;
+  --color-gold-dark: #9B7B42;
+  --color-gold-foil: linear-gradient(135deg, #D4B678 0%, #F5E2B8 35%, #C8A96B 65%, #9E7D42 100%);
+  --color-gold-foil-subtle: linear-gradient(135deg, rgba(200, 169, 107, 0.15) 0%, rgba(245, 226, 184, 0.3) 50%, rgba(158, 125, 66, 0.15) 100%);
+  
+  --color-charcoal: #1C1C1A;
+  --color-charcoal-deep: #121210;
+  --color-charcoal-light: #2D2D29;
+  --color-charcoal-muted: #575752;
+
+  --color-burgundy: #6F2633;
+  --color-burgundy-dark: #4A1721;
+  --color-burgundy-light: #8E3242;
+
+  --color-sage: #A8B5A0;
+  --color-sage-light: #DCE3D8;
+  --color-sage-soft: #F1F4EE;
+
+  /* Elevation Shadows */
+  --shadow-subtle: 0 4px 20px rgba(18, 53, 43, 0.04);
+  --shadow-medium: 0 10px 30px rgba(18, 53, 43, 0.08);
+  --shadow-luxury: 0 20px 50px rgba(18, 53, 43, 0.12), 0 0 0 1px rgba(200, 169, 107, 0.25);
+  --shadow-card-open: 0 30px 80px rgba(11, 34, 27, 0.25), 0 0 0 1px rgba(200, 169, 107, 0.35);
+  --shadow-modal: 0 40px 100px rgba(0, 0, 0, 0.6);
+
+  /* Fonts */
+  --font-serif-luxury: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-display-luxury: 'Cinzel', 'Playfair Display', serif;
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-telugu: 'Noto Serif Telugu', 'Suranna', 'Ramabhadra', serif;
+  --font-kannada: 'Noto Serif Kannada', serif;
+  
+  /* Active Language dynamic font variable */
+  --font-content: 'Noto Serif Telugu', 'Suranna', serif;
+
+  /* Transitions */
+  --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-card: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease;
+}
+
+/* Language font assignments */
+html[lang="te"], body.lang-te {
+  --font-content: 'Noto Serif Telugu', 'Suranna', serif;
+}
+html[lang="kn"], body.lang-kn {
+  --font-content: 'Noto Serif Kannada', serif;
+}
+html[lang="en"], body.lang-en {
+  --font-content: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* ========================================================
+   BASE RESETS & DEFAULTS
+   ======================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+}
+
+body {
+  font-family: var(--font-content);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Paper Grain Texture Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Typography styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-content);
+  color: var(--color-emerald-deep);
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.font-display {
+  font-family: var(--font-display-luxury);
+}
+
+.font-serif-en {
+  font-family: var(--font-serif-luxury);
+}
+
+.font-sans-ui {
+  font-family: var(--font-sans);
+}
+
+p {
+  color: var(--color-charcoal-muted);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ========================================================
+   REUSABLE LUXURY UI UTILITIES
+   ======================================================== */
+.container {
+  width: 100%;
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.25rem, 5vw, 3.5rem);
+  padding-right: clamp(1.25rem, 5vw, 3.5rem);
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.25rem, 5vw, 2.5rem);
+  padding-right: clamp(1.25rem, 5vw, 2.5rem);
+}
+
+/* Section Common Spacing */
+.luxury-section {
+  padding-top: clamp(4.5rem, 9vw, 8.5rem);
+  padding-bottom: clamp(4.5rem, 9vw, 8.5rem);
+  position: relative;
+}
+
+.luxury-section-emerald {
+  background-color: var(--color-emerald-deep);
+  color: var(--color-ivory);
+}
+
+.luxury-section-emerald h1,
+.luxury-section-emerald h2,
+.luxury-section-emerald h3 {
+  color: var(--color-ivory-light);
+}
+
+.luxury-section-emerald p {
+  color: var(--color-sage-light);
+}
+
+/* Section Header Badges & Lines */
+.section-header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--color-gold-champagne);
+  margin-bottom: 1rem;
+}
+
+.eyebrow-badge::before,
+.eyebrow-badge::after {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--color-gold-champagne);
+  opacity: 0.6;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.65;
+}
+
+/* Gold Ornamental Separators */
+.gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.gold-divider-line {
+  flex: 1;
+  max-width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold-champagne), transparent);
+}
+
+.gold-divider-diamond {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-gold-champagne);
+  transform: rotate(45deg);
+}
+
+/* Primary Luxury Buttons */
+.btn-luxury-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: var(--color-emerald-deep);
+  color: var(--color-ivory-light);
+  border: 1px solid var(--color-gold-champagne);
+  padding: 0.95rem 2.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 15px rgba(18, 53, 43, 0.15);
+}
+
+.btn-luxury-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(200, 169, 107, 0.25), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-luxury-primary:hover {
+  background-color: var(--color-emerald-dark);
+  border-color: var(--color-gold-light);
+  color: var(--color-gold-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(18, 53, 43, 0.25), 0 0 15px rgba(200, 169, 107, 0.2);
+}
+
+.btn-luxury-primary:hover::before {
+  left: 100%;
+}
+
+.btn-luxury-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: transparent;
+  color: var(--color-emerald-deep);
+  border: 1px solid rgba(18, 53, 43, 0.3);
+  padding: 0.95rem 2.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  transition: var(--transition-smooth);
+}
+
+.btn-luxury-secondary:hover {
+  background-color: rgba(18, 53, 43, 0.05);
+  border-color: var(--color-emerald-deep);
+  color: var(--color-emerald-dark);
+  transform: translateY(-2px);
+}
+
+.btn-gold-accent {
+  background: var(--color-gold-foil);
+  color: var(--color-emerald-dark);
+  border: 1px solid var(--color-gold-bright);
+  font-weight: 600;
+}
+
+.btn-gold-accent:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 8px 30px rgba(200, 169, 107, 0.4);
+}
+
+/* Gold Text Gradient */
+.gold-foil-text {
+  background: var(--color-gold-foil);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* 1px Gold Border Frame */
+.gold-frame {
+  position: relative;
+  border: 1px solid rgba(200, 169, 107, 0.45);
+}
+
+.gold-frame::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(200, 169, 107, 0.2);
+  pointer-events: none;
+}
+
+/* Subtle Shimmer Animation */
+@keyframes goldShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer-foil {
+  background: linear-gradient(
+    90deg,
+    #C8A96B 0%,
+    #FFF4D2 25%,
+    #C8A96B 50%,
+    #FFF4D2 75%,
+    #C8A96B 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 8s linear infinite;
+}
+
+/* Smooth Fade In Sequence Classes */
+.animate-fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Language Switch Smooth Transition */
+.lang-fade-transition {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.lang-fade-transition.fading-out {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.lang-fade-transition.fading-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
