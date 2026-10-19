@@ -16,7 +16,7 @@ const FAMILY_GROUPS: FamilyGroup[] = [
     id: 'sons',
     titleTelugu: 'కుమారులు',
     titleEnglish: 'Sons',
-    tagTelugu: 'మా అమ్మా నాన్నల గోల్డెన్ జూబ్లీ ఫంక్షన్కి తప్పకుండా రండి!',
+    tagTelugu: 'మా అమ్మా నాన్నల గోల్డెన్ జూబ్లీ వేడుకకి తప్పకుండా రండి!',
     icon: <Users size={20} color="var(--color-maroon)" />,
     names: [
       'ASHOK KUMAR',
@@ -29,7 +29,7 @@ const FAMILY_GROUPS: FamilyGroup[] = [
     id: 'daughters-in-law',
     titleTelugu: 'కోడళ్ళు',
     titleEnglish: 'Daughters-in-law',
-    tagTelugu: 'మా మామయ్య, అత్తమ్మల గోల్డెన్ జూబ్లీ ఫంక్షన్కి తప్పకుండా రండి!',
+    tagTelugu: 'మా మామయ్య, అత్తమ్మల గోల్డెన్ జూబ్లీ వేడుకకి తప్పకుండా రండి!',
     icon: <Heart size={19} color="var(--color-maroon)" />,
     names: [
       'MAHA LAKSHMI',
@@ -41,7 +41,7 @@ const FAMILY_GROUPS: FamilyGroup[] = [
     id: 'grandchildren',
     titleTelugu: 'మనుమలు & మనుమరాళ్ళు',
     titleEnglish: 'Grandchildren',
-    tagTelugu: 'మా అబ్బా నానమ్మల ఫంక్షన్కి తప్పకుండా రండి!',
+    tagTelugu: 'మా అబ్బా నానమ్మల వేడుకకి తప్పకుండా రండి!',
     icon: <Sparkles size={19} color="var(--color-maroon)" />,
     names: [
       'AKSHAY KUMAR',

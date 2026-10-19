@@ -1,7 +1,7 @@
 # 50th Wedding Anniversary — Telugu Golden Jubilee Digital Invitation
 ## స్వర్ణోత్సవ ఆహ్వాన పత్రిక
 
-A divine, traditional, and mobile-first Telugu 50th Wedding Anniversary Digital Invitation website for **శ్రీమతి పుల్లగూర సుబ్బలక్షమ్మ** and **శ్రీ పుల్లగూర పెద్ద గోవిందస్వామి**, hosted with devotion by the Pullagura family.
+A divine, traditional, and mobile-first Telugu 50th Wedding Anniversary Digital Invitation website for **శ్రీమతి పుల్లగూర సుబ్బలక్షుమ్మ** and **శ్రీ పుల్లగూర పెద్ద గోవిందు స్వామి**, hosted with devotion by the Pullagura family.
 
 ---
 

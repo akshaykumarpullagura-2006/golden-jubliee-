@@ -92,18 +92,41 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   style={{
                     borderRadius: '12px',
                     overflow: 'hidden',
-                    backgroundColor: '#4A0A16',
+                    backgroundColor: '#380610',
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '340px',
+                    maxHeight: '440px',
                   }}
                 >
+                  {/* Ambient Backdrop */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: '-12px',
+                      backgroundImage: `url(${INVITATION_CONFIG.couple.photoSrc})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      filter: 'blur(20px) brightness(0.6)',
+                      opacity: 0.85,
+                      transform: 'scale(1.15)',
+                    }}
+                  />
                   <img
                     src={INVITATION_CONFIG.couple.photoSrc}
                     alt={INVITATION_CONFIG.couple.altText}
                     style={{
-                      width: '100%',
+                      position: 'relative',
+                      zIndex: 2,
+                      maxWidth: '100%',
+                      maxHeight: '440px',
+                      width: 'auto',
                       height: 'auto',
-                      maxHeight: '380px',
-                      objectFit: 'cover',
+                      objectFit: 'contain',
                       display: 'block',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
                     }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;

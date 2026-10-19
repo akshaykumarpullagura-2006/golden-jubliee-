@@ -127,17 +127,47 @@ export const PhotoGallery: React.FC = () => {
                 transition: 'transform 0.25s ease, box-shadow 0.25s ease',
               }}
             >
-              {/* Photo Image */}
-              <div style={{ position: 'relative', height: '190px', overflow: 'hidden' }}>
+              {/* Photo Image Container - Fits full image in box without cropping */}
+              <div
+                style={{
+                  position: 'relative',
+                  height: '240px',
+                  overflow: 'hidden',
+                  backgroundColor: '#261811',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {/* Ambient Blurred Backdrop to smoothly fill letterboxing */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: '-10px',
+                    backgroundImage: `url(${photo.src})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    filter: 'blur(16px) brightness(0.55)',
+                    opacity: 0.8,
+                    transform: 'scale(1.15)',
+                  }}
+                />
+
+                {/* Main Photo - Fits completely inside box without cutting heads */}
                 <img
                   src={photo.src}
                   alt={photo.title}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
+                    position: 'relative',
+                    zIndex: 2,
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    width: 'auto',
+                    height: 'auto',
+                    objectFit: 'contain',
                     display: 'block',
-                    transition: 'transform 0.4s ease',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
+                    transition: 'transform 0.3s ease',
                   }}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -153,17 +183,19 @@ export const PhotoGallery: React.FC = () => {
                     position: 'absolute',
                     top: '8px',
                     right: '8px',
-                    backgroundColor: 'rgba(52, 34, 23, 0.65)',
+                    backgroundColor: 'rgba(52, 34, 23, 0.75)',
                     color: '#FFFFFF',
                     borderRadius: 'var(--radius-full)',
-                    width: '26px',
-                    height: '26px',
+                    width: '28px',
+                    height: '28px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    zIndex: 5,
+                    backdropFilter: 'blur(4px)',
                   }}
                 >
-                  <Maximize2 size={12} />
+                  <Maximize2 size={13} />
                 </div>
               </div>
 

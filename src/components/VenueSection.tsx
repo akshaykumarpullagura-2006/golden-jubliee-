@@ -62,6 +62,31 @@ export const VenueSection: React.FC = () => {
         <div className="divine-card">
           <div className="divine-border-inner" style={{ textAlign: 'center' }}>
             
+            {/* Venue Photo Display */}
+            {INVITATION_CONFIG.venue.photoSrc && (
+              <div
+                style={{
+                  position: 'relative',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  marginBottom: '1.25rem',
+                  border: '1.5px solid var(--color-gold)',
+                  backgroundColor: '#FFFBF2',
+                  boxShadow: '0 8px 24px rgba(120, 17, 35, 0.12)',
+                }}
+              >
+                <img
+                  src={INVITATION_CONFIG.venue.photoSrc}
+                  alt={INVITATION_CONFIG.venue.name}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    display: 'block',
+                  }}
+                />
+              </div>
+            )}
+
             {/* Subtle Map Pin Medallion */}
             <div
               style={{
