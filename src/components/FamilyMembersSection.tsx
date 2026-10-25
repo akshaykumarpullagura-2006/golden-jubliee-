@@ -1,59 +1,24 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { LotusDivider } from './TraditionalMotifs';
 import { Users, Heart, Sparkles } from 'lucide-react';
 
-interface FamilyGroup {
-  id: string;
-  titleTelugu: string;
-  titleEnglish: string;
-  tagTelugu: string;
-  icon: React.ReactNode;
-  names: string[];
-}
-
-const FAMILY_GROUPS: FamilyGroup[] = [
-  {
-    id: 'sons',
-    titleTelugu: 'కుమారులు',
-    titleEnglish: 'Sons',
-    tagTelugu: 'మా అమ్మా నాన్నల గోల్డెన్ జూబ్లీ వేడుకకి తప్పకుండా రండి!',
-    icon: <Users size={20} color="var(--color-maroon)" />,
-    names: [
-      'ASHOK KUMAR',
-      'MURALI KRISHNA MURTHY',
-      'RAJESH KUMAR',
-      'PRAVEEN KUMAR',
-    ],
-  },
-  {
-    id: 'daughters-in-law',
-    titleTelugu: 'కోడళ్ళు',
-    titleEnglish: 'Daughters-in-law',
-    tagTelugu: 'మా మామయ్య, అత్తమ్మల గోల్డెన్ జూబ్లీ వేడుకకి తప్పకుండా రండి!',
-    icon: <Heart size={19} color="var(--color-maroon)" />,
-    names: [
-      'MAHA LAKSHMI',
-      'PRASHANTHI',
-      'SAI LAKSHMI',
-    ],
-  },
-  {
-    id: 'grandchildren',
-    titleTelugu: 'మనుమలు & మనుమరాళ్ళు',
-    titleEnglish: 'Grandchildren',
-    tagTelugu: 'మా అబ్బా నానమ్మల వేడుకకి తప్పకుండా రండి!',
-    icon: <Sparkles size={19} color="var(--color-maroon)" />,
-    names: [
-      'AKSHAY KUMAR',
-      'ADITHYA',
-      'AMRUTHA',
-      'HARSHA SASI NIKETHAN',
-      'HITHASVI',
-    ],
-  },
-];
-
 export const FamilyMembersSection: React.FC = () => {
+  const { config } = useLanguage();
+
+  const getGroupIcon = (id: string) => {
+    switch (id) {
+      case 'sons':
+        return <Users size={20} color="var(--color-maroon)" />;
+      case 'daughters-in-law':
+        return <Heart size={19} color="var(--color-maroon)" />;
+      case 'grandchildren':
+        return <Sparkles size={19} color="var(--color-maroon)" />;
+      default:
+        return <Users size={20} color="var(--color-maroon)" />;
+    }
+  };
+
   return (
     <section
       id="family-members-section"
@@ -78,7 +43,7 @@ export const FamilyMembersSection: React.FC = () => {
               textTransform: 'uppercase',
             }}
           >
-            ఆత్మీయ ఆహ్వానం • Family Cordial Invite
+            {config.familySection.badge}
           </span>
 
           <h2
@@ -91,7 +56,7 @@ export const FamilyMembersSection: React.FC = () => {
               marginBottom: '0.2rem',
             }}
           >
-            మా కుటుంబం తరఫున ఆహ్వానం
+            {config.familySection.heading}
           </h2>
 
           <LotusDivider />
@@ -99,7 +64,7 @@ export const FamilyMembersSection: React.FC = () => {
 
         {/* 3 Balanced Cards strictly in the same row on desktop / tablet, stacked on mobile */}
         <div className="family-cards-grid">
-          {FAMILY_GROUPS.map((group) => (
+          {config.familySection.groups.map((group) => (
             <div
               key={group.id}
               className="divine-card"
@@ -135,10 +100,10 @@ export const FamilyMembersSection: React.FC = () => {
                       boxShadow: '0 2px 8px rgba(120, 17, 35, 0.06)',
                     }}
                   >
-                    {group.icon}
+                    {getGroupIcon(group.id)}
                   </div>
 
-                  {/* Group Title in Telugu */}
+                  {/* Group Title in Selected Language */}
                   <h3
                     style={{
                       fontFamily: 'var(--font-telugu-serif)',
@@ -149,7 +114,7 @@ export const FamilyMembersSection: React.FC = () => {
                       marginBottom: '0.1rem',
                     }}
                   >
-                    {group.titleTelugu}
+                    {group.title}
                   </h3>
 
                   {/* English Subtitle */}
@@ -163,7 +128,7 @@ export const FamilyMembersSection: React.FC = () => {
                       marginBottom: '0.95rem',
                     }}
                   >
-                    {group.titleEnglish}
+                    {group.subtitle}
                   </div>
 
                   {/* Names List */}
@@ -195,7 +160,7 @@ export const FamilyMembersSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Natural Telugu Invitation Tag */}
+                {/* Natural Invitation Tag in Selected Language */}
                 <div
                   style={{
                     padding: '0.65rem 0.85rem',
@@ -214,7 +179,7 @@ export const FamilyMembersSection: React.FC = () => {
                       lineHeight: 1.45,
                     }}
                   >
-                    &ldquo;{group.tagTelugu}&rdquo;
+                    &ldquo;{group.tag}&rdquo;
                   </p>
                 </div>
 

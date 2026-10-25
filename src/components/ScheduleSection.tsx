@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { INVITATION_CONFIG } from '../data/invitationConfig';
+import { useLanguage } from '../context/LanguageContext';
 import { LotusDivider } from './TraditionalMotifs';
-import { Calendar, Clock, Download, ExternalLink } from 'lucide-react';
+import { Calendar, Clock, ExternalLink } from 'lucide-react';
 
 interface ScheduleSectionProps {
-  onAddToCalendar: () => void;
+  onAddToCalendar?: () => void;
 }
 
-export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalendar }) => {
-  // Live Countdown to 30 October 2026, 08:30 AM IST
+export const ScheduleSection: React.FC<ScheduleSectionProps> = () => {
+  const { config, language } = useLanguage();
+
+  // Live Countdown to target date
   const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number }>({
     days: 0,
     hours: 0,
@@ -17,7 +19,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
   });
 
   useEffect(() => {
-    const targetDate = new Date(INVITATION_CONFIG.dateDetails.isoDate).getTime();
+    const targetDate = new Date(config.dateDetails.isoDate).getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -36,17 +38,34 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [config.dateDetails.isoDate]);
 
   const createGoogleCalendarUrl = () => {
-    const title = encodeURIComponent('గోల్డెన్ జూబ్లీ - శ్రీమతి పుల్లగూర సుబ్బలక్షుమ్మ & శ్రీ పుల్లగూర పెద్ద గోవిందు స్వామి');
-    const details = encodeURIComponent(
-      '50 వసంతాల దాంపత్య స్వర్ణోత్సవం (Golden Jubilee Celebration)\n\nకార్యక్రమ వివరాలు:\n• ఉదయం 8:30 — పాద పూజ\n• ఉదయం 9:00 — సత్యనారాయణ స్వామి పూజ ప్రారంభం\n• మధ్యాహ్నం 12:00 — గోల్డెన్ జూబ్లీ వేడుక\n• మధ్యాహ్నం 1:00 — విందు భోజనం\n\nఆహ్వానించువారు: శ్రీ పుల్లగూర ఫ్యామిలీ'
-    );
-    const location = encodeURIComponent('శ్రీ వాసవి కళ్యాణ మండపం (A/C), యర్రగుంట్ల, ఆంధ్రప్రదేశ్');
-    const dates = '20261030T030000Z/20261030T100000Z';
+    const title = encodeURIComponent(config.calendar.title);
+    const details = encodeURIComponent(config.calendar.details);
+    const location = encodeURIComponent(`${config.venue.name}, ${config.venue.town}, ${config.venue.districtState}`);
+    const dates = '20261030T033000Z/20261030T100000Z';
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
   };
+
+  const getSectionSub = () => {
+    if (language === 'kn') return 'ಶುಭ ಮುಹೂರ್ತ & ಸಮಯ';
+    if (language === 'en') return 'Auspicious Timings & Schedule';
+    return 'శుభ ముహూర్తం & సమయాలు';
+  };
+
+  const getSectionHeading = () => {
+    if (language === 'kn') return 'ದಿನಾಂಕ & ಕಾರ್ಯಕ್ರಮದ ವಿವರ';
+    if (language === 'en') return 'Date & Program Details';
+    return 'తేదీ & కార్యక్రమ వివరాలు';
+  };
+
+  const countdownUnits = [
+    { label: config.dateDetails.countdownLabels.days, val: timeLeft.days },
+    { label: config.dateDetails.countdownLabels.hours, val: timeLeft.hours },
+    { label: config.dateDetails.countdownLabels.minutes, val: timeLeft.minutes },
+    { label: config.dateDetails.countdownLabels.seconds, val: timeLeft.seconds },
+  ];
 
   return (
     <section
@@ -72,7 +91,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
               textTransform: 'uppercase',
             }}
           >
-            శుభ ముహూర్తం &amp; సమయాలు
+            {getSectionSub()}
           </span>
           <h2
             style={{
@@ -84,7 +103,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
               marginBottom: '0.2rem',
             }}
           >
-            తేదీ &amp; కార్యక్రమ వివరాలు
+            {getSectionHeading()}
           </h2>
           <LotusDivider />
         </div>
@@ -112,7 +131,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
                   lineHeight: 1.15,
                 }}
               >
-                {INVITATION_CONFIG.dateDetails.dateDisplay}
+                {config.dateDetails.dateDisplay}
               </div>
 
               <div
@@ -124,7 +143,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
                   marginTop: '0.15rem',
                 }}
               >
-                {INVITATION_CONFIG.dateDetails.dayDisplay}
+                {config.dateDetails.dayDisplay}
               </div>
 
               {/* Compact Countdown Bar */}
@@ -137,12 +156,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
                   width: '100%',
                 }}
               >
-                {[
-                  { label: 'రోజులు', val: timeLeft.days },
-                  { label: 'గంటలు', val: timeLeft.hours },
-                  { label: 'నిమిషాలు', val: timeLeft.minutes },
-                  { label: 'సెకన్లు', val: timeLeft.seconds },
-                ].map((item, idx) => (
+                {countdownUnits.map((item, idx) => (
                   <div
                     key={idx}
                     style={{
@@ -150,7 +164,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
                       border: '1px solid rgba(197, 158, 71, 0.35)',
                       borderRadius: 'var(--radius-sm)',
                       padding: '0.4rem clamp(0.45rem, 1.8vw, 0.75rem)',
-                      minWidth: 'clamp(52px, 14vw, 68px)',
+                      minWidth: 'clamp(54px, 14vw, 70px)',
                       textAlign: 'center',
                     }}
                   >
@@ -201,15 +215,6 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
                   <span>Google Calendar</span>
                   <ExternalLink size={12} />
                 </a>
-
-                <button
-                  onClick={onAddToCalendar}
-                  className="btn-divine-outline"
-                  style={{ fontSize: '0.82rem', padding: '0.45rem 1rem' }}
-                >
-                  <Download size={14} />
-                  <span>.ICS డౌన్‌లోడ్</span>
-                </button>
               </div>
             </div>
 
@@ -222,36 +227,38 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ onAddToCalenda
                 gap: '1rem',
               }}
             >
-              {INVITATION_CONFIG.schedule.map((event, idx) => (
+              {config.schedule.map((event, idx) => (
                 <div
                   key={event.id}
                   style={{
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '0.85rem',
-                    paddingBottom: idx !== INVITATION_CONFIG.schedule.length - 1 ? '0.95rem' : '0',
-                    borderBottom: idx !== INVITATION_CONFIG.schedule.length - 1 ? '1px dashed rgba(197, 158, 71, 0.22)' : 'none',
+                    paddingBottom: idx !== config.schedule.length - 1 ? '0.95rem' : '0',
+                    borderBottom: idx !== config.schedule.length - 1 ? '1px dashed rgba(197, 158, 71, 0.22)' : 'none',
                   }}
                 >
                   {/* Time Indicator Badge */}
                   <div
                     style={{
                       flexShrink: 0,
-                      width: 'clamp(92px, 26vw, 120px)',
+                      width: 'clamp(112px, 28vw, 134px)',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '0.35rem',
-                      padding: '0.35rem 0.6rem',
+                      justifyContent: 'center',
+                      gap: '0.4rem',
+                      padding: '0.38rem 0.6rem',
                       backgroundColor: 'rgba(120, 17, 35, 0.06)',
                       border: '1px solid rgba(197, 158, 71, 0.35)',
                       borderRadius: 'var(--radius-sm)',
                       color: 'var(--color-maroon)',
                       fontFamily: 'var(--font-telugu-serif)',
                       fontWeight: 700,
-                      fontSize: 'clamp(0.8rem, 2vw, 0.9rem)',
+                      fontSize: 'clamp(0.82rem, 2vw, 0.92rem)',
+                      whiteSpace: 'nowrap',
                     }}
                   >
-                    <Clock size={13} color="var(--color-gold-dark)" />
+                    <Clock size={13} color="var(--color-gold-dark)" style={{ flexShrink: 0 }} />
                     <span>{event.timeDisplay}</span>
                   </div>
 

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { INVITATION_CONFIG } from '../data/invitationConfig';
+import { useLanguage } from '../context/LanguageContext';
 import { LotusDivider } from './TraditionalMotifs';
 import { MapPin, Navigation, Copy, Check, ExternalLink } from 'lucide-react';
 
 export const VenueSection: React.FC = () => {
+  const { config } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopyAddress = async () => {
-    const fullAddress = `${INVITATION_CONFIG.venue.name}, ${INVITATION_CONFIG.venue.town}, ${INVITATION_CONFIG.venue.districtState}`;
+    const fullAddress = `${config.venue.name}, ${config.venue.town}, ${config.venue.districtState}`;
     try {
       await navigator.clipboard.writeText(fullAddress);
       setCopied(true);
@@ -41,7 +42,7 @@ export const VenueSection: React.FC = () => {
               textTransform: 'uppercase',
             }}
           >
-            కళ్యాణ వేదిక &amp; చిరునామా
+            {config.venue.sectionBadge}
           </span>
           <h2
             style={{
@@ -53,7 +54,7 @@ export const VenueSection: React.FC = () => {
               marginBottom: '0.2rem',
             }}
           >
-            {INVITATION_CONFIG.venue.label}
+            {config.venue.label}
           </h2>
           <LotusDivider />
         </div>
@@ -63,7 +64,7 @@ export const VenueSection: React.FC = () => {
           <div className="divine-border-inner" style={{ textAlign: 'center' }}>
             
             {/* Venue Photo Display */}
-            {INVITATION_CONFIG.venue.photoSrc && (
+            {config.venue.photoSrc && (
               <div
                 style={{
                   position: 'relative',
@@ -76,8 +77,8 @@ export const VenueSection: React.FC = () => {
                 }}
               >
                 <img
-                  src={INVITATION_CONFIG.venue.photoSrc}
-                  alt={INVITATION_CONFIG.venue.name}
+                  src={config.venue.photoSrc}
+                  alt={config.venue.name}
                   style={{
                     width: '100%',
                     height: 'auto',
@@ -116,7 +117,7 @@ export const VenueSection: React.FC = () => {
                 marginBottom: '0.25rem',
               }}
             >
-              {INVITATION_CONFIG.venue.name}
+              {config.venue.name}
             </h3>
 
             {/* Town Name */}
@@ -129,7 +130,7 @@ export const VenueSection: React.FC = () => {
                 marginBottom: '0.2rem',
               }}
             >
-              {INVITATION_CONFIG.venue.town}
+              {config.venue.town}
             </div>
 
             {/* District & State */}
@@ -141,7 +142,7 @@ export const VenueSection: React.FC = () => {
                 marginBottom: '1.5rem',
               }}
             >
-              {INVITATION_CONFIG.venue.districtState}
+              {config.venue.districtState}
             </p>
 
             {/* Prominent Mobile-Friendly Directions Action */}
@@ -155,7 +156,7 @@ export const VenueSection: React.FC = () => {
             >
               <a
                 id="google-maps-directions-link"
-                href={INVITATION_CONFIG.venue.googleMapsUrl}
+                href={config.venue.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-divine-maroon"
@@ -165,10 +166,10 @@ export const VenueSection: React.FC = () => {
                   width: '100%',
                   maxWidth: '340px',
                 }}
-                aria-label="Google Mapsలో మార్గం చూడండి - View directions in Google Maps"
+                aria-label={`${config.venue.buttonText} - View directions in Google Maps`}
               >
                 <Navigation size={17} color="var(--color-gold-champagne)" />
-                <span>{INVITATION_CONFIG.venue.buttonText}</span>
+                <span>{config.venue.buttonText}</span>
                 <ExternalLink size={14} color="var(--color-gold-champagne)" />
               </a>
 
@@ -178,7 +179,7 @@ export const VenueSection: React.FC = () => {
                 style={{ fontSize: '0.82rem', padding: '0.45rem 1.15rem' }}
               >
                 {copied ? <Check size={14} color="green" /> : <Copy size={14} />}
-                <span>{copied ? 'చిరునామా కాపీ చేయబడింది!' : 'చిరునామా కాపీ చేయండి'}</span>
+                <span>{copied ? config.venue.copiedText : config.venue.copyAddressText}</span>
               </button>
             </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { INVITATION_CONFIG } from './data/invitationConfig';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { InvitationCover } from './components/InvitationCover';
 import { HeaderNav } from './components/HeaderNav';
 import { HeroSection } from './components/HeroSection';
@@ -14,7 +14,8 @@ import { PetalCanvas } from './components/PetalCanvas';
 import { AdminPanel } from './components/AdminPanel';
 import confetti from 'canvas-confetti';
 
-export const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const { config, language } = useLanguage();
   // Stage One: Cover is initially closed
   const [isCoverOpen, setIsCoverOpen] = useState(false);
   // Admin Panel modal state
@@ -62,8 +63,8 @@ export const App: React.FC = () => {
   // Web Share API handler
   const handleShare = async () => {
     const shareData = {
-      title: `${INVITATION_CONFIG.eventTitle} - ${INVITATION_CONFIG.couple.wifeName} & ${INVITATION_CONFIG.couple.husbandName}`,
-      text: `${INVITATION_CONFIG.couple.wifeHonorific} ${INVITATION_CONFIG.couple.wifeName} & ${INVITATION_CONFIG.couple.husbandHonorific} ${INVITATION_CONFIG.couple.husbandName} - 50 వసంతాల దాంపత్య స్వర్ణోత్సవ ఆహ్వాన పత్రిక. తేదీ: ${INVITATION_CONFIG.dateDetails.fullDateDisplay}, వేదిక: ${INVITATION_CONFIG.venue.name}, ${INVITATION_CONFIG.venue.town}.`,
+      title: `${config.eventTitle} - ${config.couple.wifeName} & ${config.couple.husbandName}`,
+      text: `${config.couple.wifeHonorific} ${config.couple.wifeName} & ${config.couple.husbandHonorific} ${config.couple.husbandName} - ${config.subHeading}. ${config.dateDetails.fullDateDisplay}, ${config.venue.name}, ${config.venue.town}.`,
       url: window.location.href,
     };
 
@@ -79,7 +80,13 @@ export const App: React.FC = () => {
     if (navigator.clipboard) {
       try {
         await navigator.clipboard.writeText(window.location.href);
-        alert('ఆహ్వాన పత్రిక లింక్ కాపీ చేయబడింది! మీరు వాట్సాప్ లేదా మెసేజ్‌లో షేర్ చేయవచ్చు.');
+        const copiedAlert =
+          language === 'kn'
+            ? 'ಆಹ್ವಾನ ಪತ್ರಿಕೆಯ ಲಿಂಕ್ ನಕಲಿಸಲಾಗಿದೆ! ನೀವು ವಾಟ್ಸಾಪ್ ಅಥವಾ ಸಂದೇಶದಲ್ಲಿ ಹಂಚಿಕೊಳ್ಳಬಹುದು.'
+            : language === 'en'
+            ? 'Invitation link copied to clipboard! You can share it via WhatsApp or Messages.'
+            : 'ఆహ్వాన పత్రిక లింక్ కాపీ చేయబడింది! మీరు వాట్సాప్ లేదా మెసేజ్‌లో షేర్ చేయవచ్చు.';
+        alert(copiedAlert);
       } catch {
         // Fallback
       }
@@ -97,11 +104,11 @@ export const App: React.FC = () => {
       'BEGIN:VEVENT',
       'UID:golden-jubilee-pullagura-20261030@pullagura.family',
       'DTSTAMP:20261011T000000Z',
-      'DTSTART:20261030T030000Z', // 08:30 AM IST (UTC+5:30)
+      'DTSTART:20261030T033000Z', // 09:00 AM IST (UTC+5:30)
       'DTEND:20261030T100000Z',   // 03:30 PM IST
-      'SUMMARY:గోల్డెన్ జూబ్లీ - శ్రీమతి పుల్లగూర సుబ్బలక్షుమ్మ & శ్రీ పుల్లగూర పెద్ద గోవిందు స్వామి',
-      'DESCRIPTION:50 వసంతాల దాంపత్య స్వర్ణోత్సవ వేడుక\\n\\nకార్యక్రమ వివరాలు:\\n08:30 AM - పాద పూజ\\n09:00 AM - శ్రీ సత్యనారాయణ స్వామి పూజ ప్రారంభం\\n12:00 PM - గోల్డెన్ జూబ్లీ వేడుక\\n01:00 PM - విందు భోజనం\\n\\nఆహ్వానించువారు: శ్రీ పుల్లగూర ఫ్యామిలీ',
-      'LOCATION:శ్రీ వాసవి కళ్యాణ మండపం (A/C)\\, యర్రగుంట్ల\\, ఆంధ్రప్రదేశ్',
+      `SUMMARY:${config.calendar.title}`,
+      `DESCRIPTION:${config.calendar.icsDescription}`,
+      `LOCATION:${config.venue.name}\\, ${config.venue.town}\\, ${config.venue.districtState}`,
       'STATUS:CONFIRMED',
       'END:VEVENT',
       'END:VCALENDAR',
@@ -176,7 +183,7 @@ export const App: React.FC = () => {
       {/* STAGE TWO & MAIN CELEBRATION WEBSITE (Unlocked and fully scrollable) */}
       {isCoverOpen && (
         <div style={{ position: 'relative', width: '100%', zIndex: 10 }}>
-          {/* Header Navigation */}
+          {/* Header Navigation with Language Switcher */}
           <HeaderNav
             onReopenCover={handleReopenCover}
             onScrollTo={handleScrollToSection}
@@ -201,7 +208,7 @@ export const App: React.FC = () => {
             {/* Couple and Family Photographs Gallery */}
             <PhotoGallery />
 
-            {/* New Section: Family Invitation (మా కుటుంబం తరఫున ఆహ్వానం) */}
+            {/* Family Members Section */}
             <FamilyMembersSection />
 
             {/* Family Invitation & Blessings */}
@@ -220,6 +227,14 @@ export const App: React.FC = () => {
       {/* Passcode-Protected Admin Panel */}
       <AdminPanel isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 };
 

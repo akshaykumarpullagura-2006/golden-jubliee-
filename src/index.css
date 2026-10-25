@@ -59,6 +59,92 @@
   --content-max-width: 960px;
 }
 
+/* Language Dynamic Typography */
+html[lang="te"], body.lang-te {
+  --font-telugu-serif: 'Noto Serif Telugu', Georgia, serif;
+  --font-telugu-sans: 'Noto Sans Telugu', -apple-system, sans-serif;
+}
+
+html[lang="kn"], body.lang-kn {
+  --font-telugu-serif: 'Noto Serif Kannada', 'Noto Serif Telugu', serif;
+  --font-telugu-sans: 'Noto Sans Kannada', 'Noto Sans Telugu', sans-serif;
+}
+
+html[lang="en"], body.lang-en {
+  --font-telugu-serif: 'Playfair Display', Georgia, serif;
+  --font-telugu-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+}
+
+/* Language Selection UI Styles */
+.lang-selector-card {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.lang-selector-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(120, 17, 35, 0.15);
+}
+.lang-selector-card:active {
+  transform: scale(0.97);
+}
+
+.lang-pill-btn {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.lang-pill-btn:hover {
+  background-color: rgba(120, 17, 35, 0.12);
+}
+
+/* Gallery Masonry Layout (Fits images naturally according to each photo's true aspect ratio) */
+.divine-gallery-masonry {
+  column-count: 1;
+  column-gap: 1.15rem;
+  width: 100%;
+}
+
+@media (min-width: 580px) {
+  .divine-gallery-masonry {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 900px) {
+  .divine-gallery-masonry {
+    column-count: 3;
+  }
+}
+
+.gallery-masonry-card {
+  break-inside: avoid;
+  margin-bottom: 1.15rem;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(197, 158, 71, 0.35);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(120, 17, 35, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  display: block;
+}
+
+.gallery-masonry-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(120, 17, 35, 0.16);
+  border-color: var(--color-gold);
+}
+
+.gallery-masonry-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.gallery-masonry-card:hover img {
+  transform: scale(1.02);
+}
+
 /* Base Resets */
 *, *::before, *::after {
   box-sizing: border-box;

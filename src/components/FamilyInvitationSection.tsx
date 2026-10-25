@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { INVITATION_CONFIG } from '../data/invitationConfig';
+import { useLanguage } from '../context/LanguageContext';
 import { LotusDivider } from './TraditionalMotifs';
 import { subscribeToBlessings, addBlessing, type BlessingItem } from '../services/firebase';
 import { Heart, Send } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const FamilyInvitationSection: React.FC = () => {
+  const { config, language } = useLanguage();
   const [blessings, setBlessings] = useState<BlessingItem[]>([]);
   const [guestName, setGuestName] = useState('');
   const [guestCity, setGuestCity] = useState('');
@@ -27,7 +28,8 @@ export const FamilyInvitationSection: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      await addBlessing(guestName.trim(), guestCity.trim() || 'ఆత్మీయులు', guestText.trim());
+      const defaultRelation = language === 'kn' ? 'ಆತ್ಮೀಯರು' : language === 'en' ? 'Well-wisher' : 'ఆత్మీయులు';
+      await addBlessing(guestName.trim(), guestCity.trim() || defaultRelation, guestText.trim());
 
       setGuestName('');
       setGuestCity('');
@@ -90,7 +92,7 @@ export const FamilyInvitationSection: React.FC = () => {
             }}
           />
 
-          {/* Exact Line 1: ఆహ్వానించువారు */}
+          {/* Exact Line 1: Invited By */}
           <div style={{ marginBottom: '1.25rem', position: 'relative', zIndex: 1 }}>
             <span
               style={{
@@ -103,7 +105,7 @@ export const FamilyInvitationSection: React.FC = () => {
                 marginBottom: '0.25rem',
               }}
             >
-              {INVITATION_CONFIG.invitationSignOff.invitedByLabel}
+              {config.invitationSignOff.invitedByLabel}
             </span>
 
             <h3
@@ -115,7 +117,7 @@ export const FamilyInvitationSection: React.FC = () => {
                 lineHeight: 1.25,
               }}
             >
-              {INVITATION_CONFIG.invitationSignOff.invitedByName}
+              {config.invitationSignOff.invitedByName}
             </h3>
           </div>
 
@@ -124,7 +126,7 @@ export const FamilyInvitationSection: React.FC = () => {
             <LotusDivider color="rgba(243, 232, 205, 0.55)" />
           </div>
 
-          {/* Exact Line 2: శుభాశీస్సులతో */}
+          {/* Exact Line 2: With Auspicious Blessings */}
           <div style={{ position: 'relative', zIndex: 1 }}>
             <span
               style={{
@@ -137,7 +139,7 @@ export const FamilyInvitationSection: React.FC = () => {
                 marginBottom: '0.35rem',
               }}
             >
-              {INVITATION_CONFIG.invitationSignOff.blessingsLabel}
+              {config.invitationSignOff.blessingsLabel}
             </span>
 
             <div
@@ -149,7 +151,7 @@ export const FamilyInvitationSection: React.FC = () => {
                 lineHeight: 1.4,
               }}
             >
-              {INVITATION_CONFIG.couple.wifeHonorific} {INVITATION_CONFIG.couple.wifeName}
+              {config.couple.wifeHonorific} {config.couple.wifeName}
               <div
                 style={{
                   fontSize: '0.92rem',
@@ -159,7 +161,7 @@ export const FamilyInvitationSection: React.FC = () => {
               >
                 &amp;
               </div>
-              {INVITATION_CONFIG.couple.husbandHonorific} {INVITATION_CONFIG.couple.husbandName}
+              {config.couple.husbandHonorific} {config.couple.husbandName}
             </div>
           </div>
         </div>
@@ -178,7 +180,7 @@ export const FamilyInvitationSection: React.FC = () => {
                     color: 'var(--color-maroon)',
                   }}
                 >
-                  దంపతులకు మీ ఆశీస్సులు తెలపండి
+                  {config.blessingsWall.heading}
                 </h4>
               </div>
               <p
@@ -189,7 +191,7 @@ export const FamilyInvitationSection: React.FC = () => {
                   marginTop: '0.15rem',
                 }}
               >
-                గోల్డెన్ జూబ్లీ స్వర్ణ దంపతులకు మీ ఆత్మీయ సందేశాన్ని అందించండి
+                {config.blessingsWall.sectionBadge}
               </p>
             </div>
 
@@ -198,7 +200,7 @@ export const FamilyInvitationSection: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.6rem' }}>
                 <input
                   type="text"
-                  placeholder="మీ పేరు (Your Name)"
+                  placeholder={config.blessingsWall.namePlaceholder}
                   value={guestName}
                   onChange={(e) => setGuestName(e.target.value)}
                   required
@@ -215,7 +217,7 @@ export const FamilyInvitationSection: React.FC = () => {
                 />
                 <input
                   type="text"
-                  placeholder="మీ ఊరు / బంధుత్వం (City / Relation)"
+                  placeholder={config.blessingsWall.cityPlaceholder}
                   value={guestCity}
                   onChange={(e) => setGuestCity(e.target.value)}
                   style={{
@@ -232,7 +234,7 @@ export const FamilyInvitationSection: React.FC = () => {
               </div>
 
               <textarea
-                placeholder="మీ శుభాశీస్సుల సందేశం (Your blessing message...)"
+                placeholder={config.blessingsWall.messagePlaceholder}
                 value={guestText}
                 onChange={(e) => setGuestText(e.target.value)}
                 required
@@ -253,11 +255,12 @@ export const FamilyInvitationSection: React.FC = () => {
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.2rem' }}>
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="btn-divine-maroon"
                   style={{ padding: '0.6rem 1.7rem', fontSize: '0.9rem' }}
                 >
                   <Send size={14} />
-                  <span>ఆశీర్వాదం పంపండి</span>
+                  <span>{isSubmitting ? config.blessingsWall.submittingBtn : config.blessingsWall.submitBtn}</span>
                 </button>
               </div>
 
@@ -272,7 +275,7 @@ export const FamilyInvitationSection: React.FC = () => {
                     marginTop: '0.25rem',
                   }}
                 >
-                  🙏 మీ ఆశీస్సులు కుటుంబానికి చేరాయి, ధన్యవాదాలు!
+                  🙏 {config.blessingsWall.submittedMessage}
                 </p>
               )}
             </form>
@@ -280,6 +283,19 @@ export const FamilyInvitationSection: React.FC = () => {
             {/* Clean Blessings List */}
             {blessings.length > 0 && (
               <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-telugu-sans)',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    color: 'var(--color-gold-dark)',
+                    textAlign: 'left',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  {config.blessingsWall.recentWishes}
+                </div>
                 {blessings.slice(0, 3).map((b) => (
                   <div
                     key={b.id}

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { INVITATION_CONFIG, type GalleryItem } from '../data/invitationConfig';
+import { useLanguage } from '../context/LanguageContext';
+import { type GalleryItem } from '../data/invitationConfig';
 import { LotusDivider } from './TraditionalMotifs';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 
 export const PhotoGallery: React.FC = () => {
+  const { config } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'couple' | 'family' | 'traditional'>('all');
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
 
-  const filteredPhotos = INVITATION_CONFIG.gallery.filter((photo) => {
+  const filteredPhotos = config.gallery.filter((photo) => {
     if (activeFilter === 'all') return true;
     return photo.category === activeFilter;
   });
@@ -25,6 +27,13 @@ export const PhotoGallery: React.FC = () => {
     const nextIndex = (currentIndex + 1) % filteredPhotos.length;
     setSelectedImage(filteredPhotos[nextIndex]);
   };
+
+  const filterTabs = [
+    { id: 'all', label: config.gallerySection.filterAll },
+    { id: 'couple', label: config.gallerySection.filterCouple },
+    { id: 'family', label: config.gallerySection.filterFamily },
+    { id: 'traditional', label: config.gallerySection.filterTraditional },
+  ];
 
   return (
     <section
@@ -50,7 +59,7 @@ export const PhotoGallery: React.FC = () => {
               textTransform: 'uppercase',
             }}
           >
-            మధుర క్షణాలు &amp; జ్ఞాపకాలు
+            {config.gallerySection.sectionBadge}
           </span>
           <h2
             style={{
@@ -62,7 +71,7 @@ export const PhotoGallery: React.FC = () => {
               marginBottom: '0.2rem',
             }}
           >
-            కుటుంబ ఛాయాచిత్రాలు
+            {config.gallerySection.heading}
           </h2>
           <LotusDivider />
         </div>
@@ -77,12 +86,7 @@ export const PhotoGallery: React.FC = () => {
             marginBottom: '1.5rem',
           }}
         >
-          {[
-            { id: 'all', label: 'అన్నీ (All)' },
-            { id: 'couple', label: 'స్వర్ణ దంపతులు' },
-            { id: 'family', label: 'కుటుంబం' },
-            { id: 'traditional', label: 'సంప్రదాయం' },
-          ].map((tab) => (
+          {filterTabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveFilter(tab.id as typeof activeFilter)}
@@ -104,14 +108,8 @@ export const PhotoGallery: React.FC = () => {
           ))}
         </div>
 
-        {/* Divine Photo Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
-            gap: '1.15rem',
-          }}
-        >
+        {/* Divine Photo Masonry Grid - Fits each photo according to its natural aspect ratio */}
+        <div className="divine-gallery-masonry">
           {filteredPhotos.map((photo) => (
             <div
               key={photo.id}
@@ -121,52 +119,25 @@ export const PhotoGallery: React.FC = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') setSelectedImage(photo);
               }}
-              className="divine-card"
-              style={{
-                cursor: 'pointer',
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-              }}
+              className="gallery-masonry-card"
             >
-              {/* Photo Image Container - Fits full image in box without cropping */}
+              {/* Photo Image Container - Fits natural dimensions without forced crop or dark bars */}
               <div
                 style={{
                   position: 'relative',
-                  height: '240px',
+                  width: '100%',
+                  backgroundColor: '#FFFDF7',
                   overflow: 'hidden',
-                  backgroundColor: '#261811',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                 }}
               >
-                {/* Ambient Blurred Backdrop to smoothly fill letterboxing */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: '-10px',
-                    backgroundImage: `url(${photo.src})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    filter: 'blur(16px) brightness(0.55)',
-                    opacity: 0.8,
-                    transform: 'scale(1.15)',
-                  }}
-                />
-
-                {/* Main Photo - Fits completely inside box without cutting heads */}
                 <img
                   src={photo.src}
                   alt={photo.title}
+                  loading="lazy"
                   style={{
-                    position: 'relative',
-                    zIndex: 2,
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    width: 'auto',
+                    width: '100%',
                     height: 'auto',
-                    objectFit: 'contain',
                     display: 'block',
-                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
                     transition: 'transform 0.3s ease',
                   }}
                   onError={(e) => {
@@ -330,27 +301,31 @@ export const PhotoGallery: React.FC = () => {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              maxWidth: '820px',
-              maxHeight: '85vh',
+              maxWidth: '92vw',
+              maxHeight: '88vh',
               width: '100%',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <img
               src={selectedImage.src}
               alt={selectedImage.title}
               style={{
-                maxWidth: '100%',
-                maxHeight: '70vh',
+                maxWidth: '92vw',
+                maxHeight: '75vh',
+                width: 'auto',
+                height: 'auto',
                 objectFit: 'contain',
                 borderRadius: 'var(--radius-sm)',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.75)',
+                border: '2px solid var(--color-gold)',
               }}
             />
             
-            <div style={{ marginTop: '1rem', textAlign: 'center', color: '#FFF8E8' }}>
+            <div style={{ marginTop: '0.85rem', textAlign: 'center', color: '#FFF8E8', maxWidth: '640px' }}>
               <div
                 style={{
                   fontFamily: 'var(--font-telugu-serif)',
@@ -364,7 +339,7 @@ export const PhotoGallery: React.FC = () => {
               <p
                 style={{
                   fontFamily: 'var(--font-telugu-sans)',
-                  fontSize: '0.9rem',
+                  fontSize: '0.88rem',
                   color: '#D4C9BC',
                 }}
               >

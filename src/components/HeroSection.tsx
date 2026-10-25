@@ -1,5 +1,5 @@
 import React from 'react';
-import { INVITATION_CONFIG } from '../data/invitationConfig';
+import { useLanguage } from '../context/LanguageContext';
 import { SacredOmBadge, LotusDivider } from './TraditionalMotifs';
 import { Calendar, MapPin, Share2, Heart } from 'lucide-react';
 
@@ -16,6 +16,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onShare,
   onAddToCalendar,
 }) => {
+  const { config, language } = useLanguage();
   return (
     <section
       id="hero-section"
@@ -65,9 +66,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 maxWidth: '480px',
               }}
             >
-              {INVITATION_CONFIG.slokam.line1}
+              {config.slokam.line1}
               <br />
-              {INVITATION_CONFIG.slokam.line2}
+              {config.slokam.line2}
             </div>
 
             {/* Couple/Family Photograph in Royal Frame */}
@@ -75,8 +76,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               style={{
                 position: 'relative',
                 width: '100%',
-                maxWidth: '440px',
-                margin: '0.5rem auto 1.25rem',
+                maxWidth: '360px',
+                margin: '0.5rem auto 1.35rem',
               }}
             >
               <div
@@ -84,49 +85,30 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   position: 'relative',
                   padding: '5px',
                   background: 'linear-gradient(135deg, #E4BC5E 0%, #C59E47 50%, #8C6A21 100%)',
-                  borderRadius: '16px',
+                  borderRadius: '18px',
                   boxShadow: '0 12px 32px rgba(120, 17, 35, 0.16)',
                 }}
               >
                 <div
                   style={{
-                    borderRadius: '12px',
+                    borderRadius: '14px',
                     overflow: 'hidden',
-                    backgroundColor: '#380610',
+                    backgroundColor: '#FFFDF7',
                     position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minHeight: '340px',
-                    maxHeight: '440px',
                   }}
                 >
-                  {/* Ambient Backdrop */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: '-12px',
-                      backgroundImage: `url(${INVITATION_CONFIG.couple.photoSrc})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      filter: 'blur(20px) brightness(0.6)',
-                      opacity: 0.85,
-                      transform: 'scale(1.15)',
-                    }}
-                  />
                   <img
-                    src={INVITATION_CONFIG.couple.photoSrc}
-                    alt={INVITATION_CONFIG.couple.altText}
+                    src={config.couple.photoSrc}
+                    alt={config.couple.altText}
                     style={{
-                      position: 'relative',
-                      zIndex: 2,
-                      maxWidth: '100%',
-                      maxHeight: '440px',
-                      width: 'auto',
+                      width: '100%',
                       height: 'auto',
-                      objectFit: 'contain',
+                      maxHeight: '480px',
+                      objectFit: 'cover',
+                      objectPosition: 'center 15%',
                       display: 'block',
-                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+                      borderRadius: '13px',
+                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
                     }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -168,7 +150,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   marginBottom: '0.15rem',
                 }}
               >
-                {INVITATION_CONFIG.yearsText}
+                {config.yearsText}
               </div>
 
               <h1
@@ -181,7 +163,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   margin: '0.1rem 0',
                 }}
               >
-                {INVITATION_CONFIG.eventTitle}
+                {config.eventTitle}
               </h1>
             </div>
 
@@ -198,7 +180,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   lineHeight: 1.35,
                 }}
               >
-                {INVITATION_CONFIG.couple.wifeHonorific} {INVITATION_CONFIG.couple.wifeName}
+                {config.couple.wifeHonorific} {config.couple.wifeName}
               </div>
 
               <div
@@ -222,11 +204,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   lineHeight: 1.35,
                 }}
               >
-                {INVITATION_CONFIG.couple.husbandHonorific} {INVITATION_CONFIG.couple.husbandName}
+                {config.couple.husbandHonorific} {config.couple.husbandName}
               </div>
             </div>
 
-            {/* Heartfelt Telugu Quote Banner */}
+            {/* Heartfelt Quote Banner */}
             <p
               style={{
                 fontFamily: 'var(--font-telugu-serif)',
@@ -242,7 +224,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 marginBottom: '1.25rem',
               }}
             >
-              &ldquo;{INVITATION_CONFIG.couple.inviteQuote}&rdquo;
+              &ldquo;{config.couple.inviteQuote}&rdquo;
             </p>
 
             {/* 1976 - 2026 Milestone Ribbon */}
@@ -262,7 +244,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               }}
             >
               <Heart size={13} fill="var(--color-gold-bright)" color="var(--color-gold-bright)" />
-              <span>1976 — 2026 : అర్థ శతాబ్దపు అపురూప దాంపత్యం</span>
+              <span>
+                {language === 'kn'
+                  ? '1976 — 2026 : 50 ವರ್ಷಗಳ ಸ್ವರ್ಣ ದಾಂಪತ್ಯ ಸಂಭ್ರಮ'
+                  : language === 'en'
+                  ? '1976 — 2026 : 50 Glorious Years of Togetherness'
+                  : '1976 — 2026 : అర్థ శతాబ్దపు అపురూప దాంపత్యం'}
+              </span>
               <Heart size={13} fill="var(--color-gold-bright)" color="var(--color-gold-bright)" />
             </div>
 
@@ -282,7 +270,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 style={{ padding: '0.65rem 1.4rem', fontSize: '0.88rem' }}
               >
                 <Calendar size={16} />
-                <span>కార్యక్రమాలు</span>
+                <span>{config.headerNav.schedule}</span>
               </button>
 
               <button
@@ -291,7 +279,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 style={{ padding: '0.65rem 1.3rem', fontSize: '0.88rem' }}
               >
                 <MapPin size={16} />
-                <span>వేదిక మార్గం</span>
+                <span>{language === 'kn' ? 'ಸ್ಥಳದ ದಾರಿ' : language === 'en' ? 'Directions' : 'వేదిక మార్గం'}</span>
               </button>
 
               <button
@@ -301,7 +289,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 title="Add to calendar"
               >
                 <Calendar size={16} />
-                <span>క్యాలెండర్</span>
+                <span>{language === 'kn' ? 'ಕ್ಯಾಲೆಂಡರ್' : language === 'en' ? 'Calendar' : 'క్యాలెండర్'}</span>
               </button>
 
               <button
@@ -311,7 +299,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 title="Share digital invitation"
               >
                 <Share2 size={16} />
-                <span>షేర్ చేయండి</span>
+                <span>{language === 'kn' ? 'ಆಹ್ವಾನ ಹಂಚಿಕೊಳ್ಳಿ' : language === 'en' ? 'Share Invite' : 'షేర్ చేయండి'}</span>
               </button>
             </div>
 

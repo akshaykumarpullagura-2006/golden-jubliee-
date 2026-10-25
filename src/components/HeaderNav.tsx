@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Calendar, MapPin, Image, Heart, Users } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import { type Language } from '../data/invitationConfig';
+import { Mail, Calendar, MapPin, Image, Heart, Users, Globe } from 'lucide-react';
 
 interface HeaderNavProps {
   onReopenCover: () => void;
@@ -8,6 +10,7 @@ interface HeaderNavProps {
 }
 
 export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo, onOpenAdmin }) => {
+  const { language, setLanguage, config } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -18,6 +21,12 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const languagePills: { code: Language; label: string }[] = [
+    { code: 'te', label: 'తె' },
+    { code: 'kn', label: 'ಕ' },
+    { code: 'en', label: 'EN' },
+  ];
+
   return (
     <header
       style={{
@@ -25,7 +34,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
         top: 0,
         zIndex: 9000,
         width: '100%',
-        backgroundColor: isScrolled ? 'rgba(255, 249, 238, 0.94)' : 'rgba(255, 249, 238, 0.88)',
+        backgroundColor: isScrolled ? 'rgba(255, 249, 238, 0.96)' : 'rgba(255, 249, 238, 0.90)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid rgba(197, 158, 71, 0.28)',
@@ -37,19 +46,20 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
         style={{
           maxWidth: 'var(--content-max-width)',
           margin: '0 auto',
-          padding: '0.5rem clamp(0.75rem, 3vw, 1.5rem)',
+          padding: '0.45rem clamp(0.75rem, 3vw, 1.5rem)',
           display: 'flex',
           flexDirection: 'column',
           gap: '0.35rem',
         }}
       >
-        {/* Top Row: Brand & Quick Cover/Admin Actions */}
+        {/* Top Row: Brand, Language Switcher, and Cover/Admin Actions */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
+            gap: '0.5rem',
           }}
         >
           {/* Brand Link */}
@@ -60,6 +70,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
               display: 'flex',
               alignItems: 'center',
               gap: '0.45rem',
+              flexShrink: 0,
             }}
           >
             <div
@@ -89,12 +100,54 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
                 color: 'var(--color-maroon)',
               }}
             >
-              గోల్డెన్ జూబ్లీ
+              {config.eventTitle}
             </span>
           </div>
 
-          {/* Quick Actions (Cover & Admin) */}
+          {/* Center/Right: Language Toggle + Cover & Admin Buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            
+            {/* Quick 3-Way Language Toggle Pill */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                border: '1.2px solid rgba(197, 158, 71, 0.45)',
+                borderRadius: 'var(--radius-full)',
+                padding: '2px',
+                boxShadow: '0 1px 4px rgba(120, 17, 35, 0.06)',
+              }}
+              title="Change Language (Telugu / Kannada / English)"
+            >
+              <Globe size={11} color="var(--color-gold-dark)" style={{ marginLeft: '4px', marginRight: '2px' }} />
+              {languagePills.map((pill) => {
+                const isActive = language === pill.code;
+                return (
+                  <button
+                    key={pill.code}
+                    type="button"
+                    onClick={() => setLanguage(pill.code)}
+                    className="lang-pill-btn"
+                    style={{
+                      border: 'none',
+                      borderRadius: 'var(--radius-full)',
+                      padding: '0.2rem 0.5rem',
+                      fontSize: '0.72rem',
+                      fontWeight: isActive ? 800 : 600,
+                      backgroundColor: isActive ? 'var(--color-maroon)' : 'transparent',
+                      color: isActive ? '#FFF9EE' : 'var(--color-maroon)',
+                      cursor: 'pointer',
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {pill.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Reopen Cover */}
             <button
               onClick={onReopenCover}
               className="btn-divine-outline"
@@ -103,12 +156,13 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
                 fontSize: '0.74rem',
                 fontWeight: 700,
               }}
-              title="View Cover"
+              title="View Invitation Cover"
             >
               <Mail size={11} />
-              <span>కవర్</span>
+              <span>{config.headerNav.cover}</span>
             </button>
 
+            {/* Admin */}
             <button
               onClick={onOpenAdmin}
               style={{
@@ -126,7 +180,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
               }}
               title="Open Admin Dashboard"
             >
-              <span>🔒 అడ్మిన్</span>
+              <span>🔒 Admin</span>
             </button>
           </div>
         </div>
@@ -163,7 +217,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
             }}
           >
             <Calendar size={12} color="var(--color-gold-dark)" />
-            <span>కార్యక్రమాలు</span>
+            <span>{config.headerNav.schedule}</span>
           </button>
 
           <button
@@ -186,7 +240,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
             }}
           >
             <MapPin size={12} color="var(--color-gold-dark)" />
-            <span>వేదిక</span>
+            <span>{config.headerNav.venue}</span>
           </button>
 
           <button
@@ -209,7 +263,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
             }}
           >
             <Image size={12} color="var(--color-gold-dark)" />
-            <span>ఫోటోలు</span>
+            <span>{config.headerNav.gallery}</span>
           </button>
 
           <button
@@ -232,7 +286,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
             }}
           >
             <Users size={12} color="var(--color-gold-dark)" />
-            <span>కుటుంబం</span>
+            <span>{config.headerNav.family}</span>
           </button>
 
           <button
@@ -255,7 +309,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onReopenCover, onScrollTo,
             }}
           >
             <Heart size={12} color="var(--color-gold-dark)" />
-            <span>ఆశీస్సులు</span>
+            <span>{config.headerNav.wishes}</span>
           </button>
         </nav>
       </div>
